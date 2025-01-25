@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "@inertiajs/react";
 import NavItem from "./NavItem";
+import hasAnyPermission from "../utils/hasAnyPermission";
 
 const Sidebar = () => {
     return (
@@ -25,7 +26,24 @@ const Sidebar = () => {
                         <li className="nav-item mt-3 mb-1 text-muted">
                             Dashboard
                         </li>
+                        {hasAnyPermission(["dashboard.index"]) && (
+                            <NavItem
+                                href="/admin/dashboard"
+                                icon="bi-speedometer"
+                                label="Dashboard"
+                            />
+                        )}
 
+                        <li className="nav-item mt-3 mb-1 text-muted">
+                            User Management
+                        </li>
+                        {hasAnyPermission(["roles.index"]) && (
+                            <NavItem
+                                href="/admin/roles"
+                                icon="bi-shield-lock"
+                                label="Roles"
+                            />
+                        )}
                     </ul>
                 </div>
             </div>
