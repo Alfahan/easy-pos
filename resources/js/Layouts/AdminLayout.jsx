@@ -8,7 +8,7 @@ const AdminLayout = ({ children }) => {
             <NavbarBackend />
             <Sidebar />
             <div className="page-content">
-                <div class="page-content-wrapper p-xxl-4">{children}</div>
+                <div className="page-content-wrapper p-xxl-4">{children}</div>
             </div>
         </>
     );
