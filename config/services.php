@@ -35,4 +35,7 @@ return [
         'client_key' => env('MIDTRANS_CLIENT_KEY'),
         'is_production' => env('MIDTRANS_IS_PRODUCTION', false),
     ],
+    'rajaongkir' => [
+        'api_key' => env('RAJAONGKIR_API_KEY'),
+    ],
 ];
