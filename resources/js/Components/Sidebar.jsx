@@ -35,13 +35,21 @@ const Sidebar = () => {
                         )}
 
                         <li className="nav-item mt-3 mb-1 text-muted">
-                            User Management
+                            Management User
                         </li>
                         {hasAnyPermission(["roles.index"]) && (
                             <NavItem
                                 href="/admin/roles"
                                 icon="bi-shield-lock"
                                 label="Roles"
+                            />
+                        )}
+
+                        {hasAnyPermission(["users.index"]) && (
+                            <NavItem
+                                href="/admin/users"
+                                icon="bi-person-circle"
+                                label="Users"
                             />
                         )}
                     </ul>
