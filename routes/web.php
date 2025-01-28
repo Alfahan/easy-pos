@@ -27,6 +27,10 @@ Route::prefix('admin')->middleware(['auth'])->name('admin.')->group(function () 
             'controller' => \App\Http\Controllers\Admin\SupplierController::class,
             'permissions' => 'suppliers.index|suppliers.create|suppliers.edit|suppliers.delete'
         ],
+        'customers' => [
+            'controller' => \App\Http\Controllers\Admin\CustomerController::class,
+            'permissions' => 'customers.index|customers.create|customers.edit|customers.delete'
+        ],
     ];
 
     foreach ($resources as $name => $resource) {
