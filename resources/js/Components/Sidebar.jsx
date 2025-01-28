@@ -53,11 +53,23 @@ const Sidebar = () => {
                             />
                         )}
 
+                        <li className="nav-item mt-3 mb-1 text-muted">
+                            Data Management
+                        </li>
+
                         {hasAnyPermission(["suppliers.index"]) && (
                             <NavItem
                                 href="/admin/suppliers"
                                 icon="bi-truck"
                                 label="Suppliers"
+                            />
+                        )}
+
+                        {hasAnyPermission(["customers.index"]) && (
+                            <NavItem
+                                href="/admin/customers"
+                                icon="bi-people"
+                                label="Customers"
                             />
                         )}
 
