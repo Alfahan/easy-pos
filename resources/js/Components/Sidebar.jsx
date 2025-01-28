@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "@inertiajs/react";
 import NavItem from "./NavItem";
+import hasAnyPermission from "../utils/hasAnyPermission";
 
 const Sidebar = () => {
     return (
@@ -25,6 +26,52 @@ const Sidebar = () => {
                         <li className="nav-item mt-3 mb-1 text-muted">
                             Dashboard
                         </li>
+                        {hasAnyPermission(["dashboard.index"]) && (
+                            <NavItem
+                                href="/admin/dashboard"
+                                icon="bi-speedometer"
+                                label="Dashboard"
+                            />
+                        )}
+
+                        <li className="nav-item mt-3 mb-1 text-muted">
+                            Management User
+                        </li>
+                        {hasAnyPermission(["roles.index"]) && (
+                            <NavItem
+                                href="/admin/roles"
+                                icon="bi-shield-lock"
+                                label="Roles"
+                            />
+                        )}
+
+                        {hasAnyPermission(["users.index"]) && (
+                            <NavItem
+                                href="/admin/users"
+                                icon="bi-person-circle"
+                                label="Users"
+                            />
+                        )}
+
+                        <li className="nav-item mt-3 mb-1 text-muted">
+                            Data Management
+                        </li>
+
+                        {hasAnyPermission(["suppliers.index"]) && (
+                            <NavItem
+                                href="/admin/suppliers"
+                                icon="bi-truck"
+                                label="Suppliers"
+                            />
+                        )}
+
+                        {hasAnyPermission(["customers.index"]) && (
+                            <NavItem
+                                href="/admin/customers"
+                                icon="bi-people"
+                                label="Customers"
+                            />
+                        )}
 
                     </ul>
                 </div>
