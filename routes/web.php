@@ -18,6 +18,11 @@ Route::prefix('admin')->middleware(['auth'])->name('admin.')->group(function () 
             'permissions' => 'roles.index|roles.create|roles.edit|roles.delete',
             'names' => 'roles'
         ],
+        'users' => [
+            'controller' => \App\Http\Controllers\Admin\UserController::class,
+            'permissions' => 'users.index|users.create|users.edit|users.delete',
+            'names' => 'users'
+        ],
     ];
 
     foreach ($resources as $name => $resource) {
