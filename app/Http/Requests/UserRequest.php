@@ -21,16 +21,25 @@ class UserRequest extends FormRequest
      */
     public function rules(): array
     {
+         /**
+         * Kita akan membedakan antara store dan update dengan melihat apakah terdapat user
+         * dari parameter route. Jika `$this->route('user')` ada, berarti sedang update.
+         * Jika tidak ada, berarti sedang store (create).
+         */
+
         $userId = $this->route('user') ? $this->route('user')->id : null;
 
+        // Aturan umum yang berlaku baik pada store maupun update
         $rules = [
-            'name' => 'required',
-            'email' => 'required|email|unique::user,email,' . $userId,
+            'name'  => 'required',
+            'email' => 'required|email|unique:users,email,' . $userId,
         ];
 
         if ($this->isMethod('POST')) {
+            // Aturan khusus saat store (POST)
             $rules['password'] = 'required|confirmed';
         } else {
+            // Aturan khusus saat update (PUT/PATCH)
             $rules['password'] = 'nullable|confirmed';
         }
 
