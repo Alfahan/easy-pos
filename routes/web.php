@@ -23,6 +23,10 @@ Route::prefix('admin')->middleware(['auth'])->name('admin.')->group(function () 
             'permissions' => 'users.index|users.create|users.edit|users.delete',
             'names' => 'users'
         ],
+        'suppliers' => [
+            'controller' => \App\Http\Controllers\Admin\SupplierController::class,
+            'permissions' => 'suppliers.index|suppliers.create|suppliers.edit|suppliers.delete'
+        ],
     ];
 
     foreach ($resources as $name => $resource) {
@@ -32,6 +36,8 @@ Route::prefix('admin')->middleware(['auth'])->name('admin.')->group(function () 
             $route->names($resource['names']);
         }
     }
+
+    Route::get('/get-cities/{provinceId}', [\App\Http\Controllers\Admin\SupplierController::class, 'getCitiesByProvince'])->name('get-cities');
 });
 
 Route::post('/logout', [\App\Http\Controllers\Auth\LogoutController::class, '__invoke'])->name('logout')->middleware('auth');
