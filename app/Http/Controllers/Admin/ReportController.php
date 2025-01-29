@@ -29,17 +29,18 @@ class ReportController extends Controller
         $startDateTime = $request->start_date . ' 00:00:00';
         $endDateTime   = $request->end_date   . ' 23:59:59';
 
-        // Tampilkan halaman dengan data transactions berdasarkan tanggal yang dipilih
+        // Ambil data transaksi
+        $transactions = Transaction::with(['customer'])
+            ->withSum('transactionDetails as total_quantity', 'quantity')
+            ->whereBetween('transaction_date', [$startDateTime, $endDateTime])
+            ->orderBy('transaction_date', 'desc')
+            ->get();
+
         return Inertia::render('Admin/Report/Index', [
-            'transactions' => Inertia::defer(function () use ($startDateTime, $endDateTime) {
-                return Transaction::with(['customer'])
-                    ->withSum('transactionDetails as total_quantity', 'quantity')
-                    ->whereBetween('transaction_date', [$startDateTime, $endDateTime])
-                    ->orderBy('transaction_date', 'desc')
-                    ->get();
-            }),
-            'start_date' => $request->start_date,
-            'end_date'   => $request->end_date,
+            'transactions' => $transactions, // HAPUS defer()
+            'start_date'   => $request->start_date,
+            'end_date'     => $request->end_date,
         ]);
     }
+
 }
