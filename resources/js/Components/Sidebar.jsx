@@ -81,6 +81,14 @@ const Sidebar = () => {
                             />
                         )}
 
+                        {hasAnyPermission(["units.index"]) && (
+                            <NavItem
+                                href="/admin/units"
+                                icon="bi-rulers"
+                                label="Units"
+                            />
+                        )}
+
                     </ul>
                 </div>
             </div>
