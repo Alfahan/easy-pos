@@ -41,6 +41,11 @@ Route::prefix('admin')->middleware(['auth'])->name('admin.')->group(function () 
             'permissions' => 'units.index|units.create|units.edit|units.delete',
             'name' => 'units'
         ],
+        'products' => [
+            'controller' => \App\Http\Controllers\Admin\ProductController::class,
+            'permissions' => 'products.index|products.create|products.edit|products.delete',
+            'name' => 'products'
+        ],
     ];
 
     foreach ($resources as $name => $resource) {
