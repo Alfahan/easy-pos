@@ -31,6 +31,11 @@ Route::prefix('admin')->middleware(['auth'])->name('admin.')->group(function () 
             'controller' => \App\Http\Controllers\Admin\CustomerController::class,
             'permissions' => 'customers.index|customers.create|customers.edit|customers.delete'
         ],
+        'categories' => [
+            'controller' => \App\Http\Controllers\Admin\CategoryController::class,
+            'permissions' => 'categories.index|categories.create|categories.edit|categories.delete',
+            'name' => 'categories'
+        ],
     ];
 
     foreach ($resources as $name => $resource) {
