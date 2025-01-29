@@ -62,6 +62,17 @@ Route::prefix('admin')->middleware(['auth'])->name('admin.')->group(function () 
     }
 
     Route::get('/get-cities/{provinceId}', [\App\Http\Controllers\Admin\SupplierController::class, 'getCitiesByProvince'])->name('get-cities');
+
+    Route::post('/get-courier-cost', [\App\Http\Controllers\Admin\ProductStockController::class, 'getCourierCost'])->name('get-courier-cost')
+        ->middleware('permission:stocks.index');
+
+    Route::prefix('sales')->name('sales.')->middleware('permission:transactions.index')->group(function () {
+        Route::get('/', [\App\Http\Controllers\Admin\TransactionController::class, 'index'])->name('index');
+        Route::post('/add-product', [\App\Http\Controllers\Admin\TransactionController::class, 'addProductToCart'])->name('add-product');
+        Route::delete('/delete-from-cart/{id}', [\App\Http\Controllers\Admin\TransactionController::class, 'deleteFromCart'])->name('delete-from-cart');
+        Route::post('/process-payment', [\App\Http\Controllers\Admin\TransactionController::class, 'processPayment'])->name('process-payment');
+        Route::post('/get-snap-token', [\App\Http\Controllers\Admin\TransactionController::class, 'getSnapToken'])->name('get-snap-token');
+    });
 });
 
 Route::post('/logout', [\App\Http\Controllers\Auth\LogoutController::class, '__invoke'])->name('logout')->middleware('auth');
