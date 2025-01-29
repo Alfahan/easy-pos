@@ -74,4 +74,19 @@ class CategoryController extends Controller
         // Arahkan kembali ke halaman kategori
         return redirect()->route('admin.categories.index');
     }
+
+    /**
+     * Hapus category dari database.
+     */
+    public function destroy($id)
+    {
+        // Ambil category berdasarkan ID, error jika tidak ditemukan
+        $category = Category::findOrFail($id);
+
+        // Hapus customer tersebut
+        $category->delete();
+
+        // Arahkan kembali ke indeks customer dengan pesan sukses
+        return redirect()->route('admin.categories.index');
+    }
 }
