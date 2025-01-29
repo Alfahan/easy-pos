@@ -97,6 +97,14 @@ const Sidebar = () => {
                             />
                         )}
 
+                        {hasAnyPermission(["stocks.index"]) && (
+                            <NavItem
+                                href="/admin/stocks"
+                                icon="bi-box-seam"
+                                label="Stock in"
+                            />
+                        )}
+
                     </ul>
                 </div>
             </div>
