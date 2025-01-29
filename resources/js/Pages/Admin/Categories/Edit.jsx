@@ -5,7 +5,7 @@ import AdminLayout from "../../../Layouts/AdminLayout";
 
 export default function CategoryEdit() {
 
-   const { category } = usePage().props;
+    const { category } = usePage().props;
     const { data, setData, put, processing, errors } = useForm({
         name: category.name || '',
         description: category.description || ''
