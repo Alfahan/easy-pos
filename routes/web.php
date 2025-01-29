@@ -46,6 +46,11 @@ Route::prefix('admin')->middleware(['auth'])->name('admin.')->group(function () 
             'permissions' => 'products.index|products.create|products.edit|products.delete',
             'name' => 'products'
         ],
+        'stocks' => [
+            'controller' => \App\Http\Controllers\Admin\ProductStockController::class,
+            'permissions' => 'stocks.index|stocks.create|stocks.edit|stocks.delete',
+            'name' => 'stocks'
+        ],
     ];
 
     foreach ($resources as $name => $resource) {
