@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\StockOpnameController;
 use Illuminate\Support\Facades\Route;
 
 Route::redirect('/login', '/');
@@ -7,29 +8,34 @@ Route::redirect('/login', '/');
 Route::middleware('guest')->group(function () {
     Route::get('/', [\App\Http\Controllers\Auth\LoginController::class, 'index'])->name('login');
     Route::post('/login', [\App\Http\Controllers\Auth\LoginController::class, 'store'])->name('login.store');
+
 });
+
+Route::post('/logout', [\App\Http\Controllers\Auth\LogoutController::class, '__invoke'])->name('logout')->middleware('auth');
 
 Route::prefix('admin')->middleware(['auth'])->name('admin.')->group(function () {
     Route::get('/dashboard', \App\Http\Controllers\Admin\DashboardController::class)->name('dashboard')->middleware('permission:dashboard.index');
 
     $resources = [
-        'roles' => [
-            'controller' => \App\Http\Controllers\Admin\RoleController::class,
-            'permissions' => 'roles.index|roles.create|roles.edit|roles.delete',
-            'names' => 'roles'
-        ],
         'users' => [
             'controller' => \App\Http\Controllers\Admin\UserController::class,
             'permissions' => 'users.index|users.create|users.edit|users.delete',
-            'names' => 'users'
+            'name' => 'users'
+        ],
+        'roles' => [
+            'controller' => \App\Http\Controllers\Admin\RoleController::class,
+            'permissions' => 'roles.index|roles.create|roles.edit|roles.delete',
+            'name' => 'roles'
         ],
         'suppliers' => [
             'controller' => \App\Http\Controllers\Admin\SupplierController::class,
-            'permissions' => 'suppliers.index|suppliers.create|suppliers.edit|suppliers.delete'
+            'permissions' => 'suppliers.index|suppliers.create|suppliers.edit|suppliers.delete',
+            'name' => 'suppliers'
         ],
         'customers' => [
             'controller' => \App\Http\Controllers\Admin\CustomerController::class,
-            'permissions' => 'customers.index|customers.create|customers.edit|customers.delete'
+            'permissions' => 'customers.index|customers.create|customers.edit|customers.delete',
+            'name' => 'customers'
         ],
         'categories' => [
             'controller' => \App\Http\Controllers\Admin\CategoryController::class,
@@ -51,6 +57,12 @@ Route::prefix('admin')->middleware(['auth'])->name('admin.')->group(function () 
             'permissions' => 'stocks.index|stocks.create|stocks.edit|stocks.delete',
             'name' => 'stocks'
         ],
+
+        'stock-opnames' => [
+            'controller' => \App\Http\Controllers\Admin\StockOpnameController::class,
+            'permissions' => 'stock-opnames.index|stock-opnames.create|stock-opnames.edit|stock-opnames.show',
+            'name' => 'stock-opnames'
+        ],
     ];
 
     foreach ($resources as $name => $resource) {
@@ -60,11 +72,6 @@ Route::prefix('admin')->middleware(['auth'])->name('admin.')->group(function () 
             $route->names($resource['names']);
         }
     }
-
-    Route::get('/get-cities/{provinceId}', [\App\Http\Controllers\Admin\SupplierController::class, 'getCitiesByProvince'])->name('get-cities');
-
-    Route::post('/get-courier-cost', [\App\Http\Controllers\Admin\ProductStockController::class, 'getCourierCost'])->name('get-courier-cost')
-        ->middleware('permission:stocks.index');
 
     Route::prefix('sales')->name('sales.')->middleware('permission:transactions.index')->group(function () {
         Route::get('/', [\App\Http\Controllers\Admin\TransactionController::class, 'index'])->name('index');
@@ -78,6 +85,15 @@ Route::prefix('admin')->middleware(['auth'])->name('admin.')->group(function () 
         Route::get('/', [\App\Http\Controllers\Admin\ReportController::class, 'index'])->name('index');
         Route::get('/generate', [\App\Http\Controllers\Admin\ReportController::class, 'generate'])->name('generate');
     });
-});
 
-Route::post('/logout', [\App\Http\Controllers\Auth\LogoutController::class, '__invoke'])->name('logout')->middleware('auth');
+    Route::get('/stock-opnames/{id}/export', [StockOpnameController::class, 'export'])
+    ->name('stock-opnames.export');
+
+    Route::get('/get-cities/{provinceId}', [\App\Http\Controllers\Admin\SupplierController::class, 'getCitiesByProvince'])->name('get-cities')
+        ->middleware('permission:suppliers.index');
+
+    Route::post('/get-courier-cost', [\App\Http\Controllers\Admin\ProductStockController::class, 'getCourierCost'])->name('get-courier-cost')
+        ->middleware('permission:stocks.index');
+
+
+});
