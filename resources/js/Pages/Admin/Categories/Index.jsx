@@ -5,23 +5,19 @@ import Pagination from "../../../Components/Pagination";
 import AdminLayout from "../../../Layouts/AdminLayout";
 import hasAnyPermission from "../../../utils/hasAnyPermission";
 
-export default function CustomerIndex() {
-    const { customers } = usePage().props;
-    const [filterText, setFilterText] = useState("");
+export default function CategoryIndex() {
+    const { categories } = usePage().props; // Mendapatkan data categories dari props
+    const [filterText, setFilterText] = useState(""); // State untuk filter pencarian
 
-    // Filter customers based on search input
-    const filteredCustomers = customers.data.filter(
-        (customer) =>
-            (customer.name &&
-                customer.name.toLowerCase().includes(filterText.toLowerCase())) ||
-            (customer.phone &&
-                customer.phone.toLowerCase().includes(filterText.toLowerCase()))
+    // Filter categories berdasarkan input pencarian
+    const filteredCategories = categories.data.filter((category) =>
+        category.name.toLowerCase().includes(filterText.toLowerCase())
     );
 
     const handleDelete = (id) => {
         Swal.fire({
             title: "Apakah Anda yakin?",
-            text: "Data ini akan dihapus secara permanen!",
+            text: "Anda tidak akan bisa mengembalikannya lagi!",
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#d33",
@@ -30,20 +26,19 @@ export default function CustomerIndex() {
         }).then((result) => {
             if (result.isConfirmed) {
                 // Panggil route delete
-                router.delete(`/admin/customers/${id}`, {
+                router.delete(`/admin/categories/${id}`, {
                     onSuccess: () => {
                         Swal.fire(
                             "Dihapus!",
-                            "Customer telah dihapus.",
+                            "Kategori telah dihapus.",
                             "success"
                         );
-                        // Refresh halaman atau perbarui state jika diperlukan
-                        window.location.reload(); // Refresh halaman
+                        window.location.reload(); // Refresh halaman setelah berhasil menghapus
                     },
                     onError: () => {
                         Swal.fire(
                             "Error!",
-                            "Terjadi masalah saat menghapus customer.",
+                            "Terjadi masalah saat menghapus kategori.",
                             "error"
                         );
                     },
@@ -55,10 +50,10 @@ export default function CustomerIndex() {
     return (
         <>
             <Head>
-                <title>Customers - EasyPOS</title>
+                <title>Category - EasyPOS</title>
             </Head>
             <AdminLayout>
-                {/* Breadcrumb */}
+                {/* Breadcrumb Navigation */}
                 <nav aria-label="breadcrumb">
                     <ol className="breadcrumb">
                         <li className="breadcrumb-item">
@@ -68,45 +63,45 @@ export default function CustomerIndex() {
                             className="breadcrumb-item active"
                             aria-current="page"
                         >
-                            Customers
+                            Category
                         </li>
                     </ol>
                 </nav>
 
-                {/* Header */}
+                {/* Header Section */}
                 <div className="row mb-3">
                     <div className="col-md-12">
                         <h3 className="font-weight-bold">
-                            <i className="bi bi-person"></i> Customers
+                            <i className="bi bi-list"></i> Category
                         </h3>
                     </div>
                 </div>
 
-                {/* Search dan Add Customer */}
+                {/* Pencarian dan Tombol Tambah Kategori */}
                 <div className="row mb-3">
                     <div className="col-md-12">
                         <div className="d-flex justify-content-between align-items-center">
                             <input
                                 type="text"
                                 className="form-control me-2 w-25"
-                                placeholder="Search by Name or Phone"
+                                placeholder="Search By Name Category"
                                 value={filterText}
                                 onChange={(e) => setFilterText(e.target.value)}
                             />
-                            {hasAnyPermission(["customers.create"]) && (
+                            {hasAnyPermission(["categories.create"]) && (
                                 <Link
-                                    href="/admin/customers/create"
+                                    href="/admin/categories/create"
                                     className="btn btn-success"
                                 >
                                     <i className="bi bi-plus-circle-fill me-2"></i>
-                                    Add Customer
+                                    Add Category
                                 </Link>
                             )}
                         </div>
                     </div>
                 </div>
 
-                {/* Tabel Customers */}
+                {/* Tabel Daftar Kategori */}
                 <div className="row">
                     <div className="col-12">
                         <div className="card border rounded">
@@ -119,89 +114,49 @@ export default function CustomerIndex() {
                                                     No.
                                                 </th>
                                                 <th>Name</th>
-                                                <th>Phone</th>
-                                                <th>Address</th>
-                                                <th>Gender</th>
+                                                <th>Description</th>
                                                 <th className="text-center">
-                                                    Actions
+                                                    Action
                                                 </th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {filteredCustomers.length > 0 ? (
-                                                filteredCustomers.map(
-                                                    (customer, index) => (
-                                                        <tr key={customer.id}>
+                                            {filteredCategories.length > 0 ? (
+                                                filteredCategories.map(
+                                                    (category, index) => (
+                                                        <tr key={category.id}>
                                                             <td className="text-center">
                                                                 {index +
                                                                     1 +
-                                                                    (customers.current_page -
+                                                                    (categories.current_page -
                                                                         1) *
-                                                                        customers.per_page}
+                                                                        categories.per_page}
                                                             </td>
                                                             <td>
-                                                                {customer.name ||
-                                                                    "No name available"}
+                                                                {category.name}
                                                             </td>
                                                             <td>
-                                                                {customer.phone ||
-                                                                    "No phone available"}
-                                                            </td>
-                                                            <td>
-                                                                {customer.address ||
-                                                                    "No address available"}
-                                                            </td>
-                                                            <td>
-                                                                <span
-                                                                    className={`badge ${
-                                                                        customer.gender ===
-                                                                        "male"
-                                                                            ? "bg-primary"
-                                                                            : customer.gender ===
-                                                                              "female"
-                                                                            ? "bg-danger"
-                                                                            : "bg-secondary"
-                                                                    }`}
-                                                                >
-                                                                    {customer.gender &&
-                                                                    typeof customer.gender ===
-                                                                        "string"
-                                                                        ? customer.gender
-                                                                              .charAt(
-                                                                                  0
-                                                                              )
-                                                                              .toUpperCase() +
-                                                                          customer.gender.slice(
-                                                                              1
-                                                                          )
-                                                                        : "N/A"}
-                                                                </span>
+                                                                {category.description}
                                                             </td>
                                                             <td className="text-center">
-                                                                {hasAnyPermission([
-                                                                    "customers.edit",
-                                                                ]) && (
+                                                                {hasAnyPermission(["categories.edit"]) && (
                                                                     <Link
-                                                                        href={`/admin/customers/${customer.id}/edit`}
+                                                                        href={`/admin/categories/${category.id}/edit`}
                                                                         className="btn btn-outline-primary btn-sm me-2 rounded"
                                                                     >
-                                                                        <i className="bi bi-pencil-fill"></i>{" "}
-                                                                        Edit
+                                                                        <i className="bi bi-pencil-fill"></i> Edit
                                                                     </Link>
                                                                 )}
-                                                                {hasAnyPermission([
-                                                                    "customers.delete",
-                                                                ]) && (
+                                                                {hasAnyPermission(["categories.delete"]) && (
                                                                     <button
                                                                         className="btn btn-outline-danger btn-sm rounded"
                                                                         onClick={() =>
                                                                             handleDelete(
-                                                                                customer.id
+                                                                                category.id
                                                                             )
                                                                         }
                                                                     >
-                                                                        <i className="bi bi-trash-fill"></i>{" "}
-                                                                        Delete
+                                                                        <i className="bi bi-trash-fill"></i> Hapus
                                                                     </button>
                                                                 )}
                                                             </td>
@@ -211,18 +166,19 @@ export default function CustomerIndex() {
                                             ) : (
                                                 <tr>
                                                     <td
-                                                        colSpan="6"
+                                                        colSpan="4"
                                                         className="text-center"
                                                     >
-                                                        No customers found
+                                                        No Category Found
                                                     </td>
                                                 </tr>
                                             )}
                                         </tbody>
                                     </table>
                                 </div>
+
                                 {/* Komponen Pagination */}
-                                <Pagination links={customers.links} />
+                                <Pagination links={categories.links} />
                             </div>
                         </div>
                     </div>

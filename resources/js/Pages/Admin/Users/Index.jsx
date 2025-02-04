@@ -45,7 +45,7 @@ export default function UserIndex() {
                 <nav aria-label="breadcrumb">
                     <ol className="breadcrumb">
                         <li className="breadcrumb-item">
-                            <Link href="/admin">Dashboard</Link>
+                            <Link href="/admin/dashboard">Dashboard</Link>
                         </li>
                         <li
                             className="breadcrumb-item active"

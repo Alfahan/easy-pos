@@ -73,6 +73,70 @@ const Sidebar = () => {
                             />
                         )}
 
+                        {hasAnyPermission(["categories.index"]) && (
+                            <NavItem
+                                href="/admin/categories"
+                                icon="bi-list-ul"
+                                label="Categories"
+                            />
+                        )}
+
+                        {hasAnyPermission(["units.index"]) && (
+                            <NavItem
+                                href="/admin/units"
+                                icon="bi-rulers"
+                                label="Units"
+                            />
+                        )}
+
+                        {hasAnyPermission(["products.index"]) && (
+                            <NavItem
+                                href="/admin/products"
+                                icon="bi-box"
+                                label="Products"
+                            />
+                        )}
+
+                        {hasAnyPermission(["stocks.index"]) && (
+                            <NavItem
+                                href="/admin/stocks"
+                                icon="bi-box-seam"
+                                label="Stock in"
+                            />
+                        )}
+
+                        <li className="nav-item mt-3 mb-1 text-muted">
+                            Transactions
+                        </li>
+
+                        {hasAnyPermission(["transactions.index"]) && (
+                            <NavItem
+                                href="/admin/sales"
+                                icon="bi-cash"
+                                label="Sales"
+                            />
+                        )}
+
+                        <li className="nav-item mt-3 mb-1 text-muted">
+                            Reports
+                        </li>
+
+                        {hasAnyPermission(["reports.index"]) && (
+                            <NavItem
+                                href="/admin/report"
+                                icon="bi-clipboard-data"
+                                label="Reports"
+                            />
+                        )}
+
+                        {hasAnyPermission(["stock-opnames.index"]) && (
+                            <NavItem
+                                href="/admin/stock-opnames"
+                                icon="bi-journal-check"
+                                label="Stock Opnames"
+                            />
+                        )}
+
                     </ul>
                 </div>
             </div>
