@@ -2,6 +2,59 @@
 
 Sistem Point of Sale (POS) berbasis web yang dikembangkan menggunakan **Laravel**, **Inertia.js**, dan **React.js**. Aplikasi ini menyediakan fitur lengkap untuk mengelola transaksi, pengguna, produk, serta laporan penjualan.
 
+# Cara Menjalankan Project Secara Lokal
+
+## 1. Clone Repository
+```sh
+git clone https://github.com/username/repository.git
+cd repository
+```
+
+## 2. Install Dependencies
+```sh
+composer install
+npm install
+```
+
+## 3. Copy File Environment
+```sh
+cp .env.example .env
+```
+
+## 4. Konfigurasi Database  
+Edit file `.env` dan sesuaikan pengaturan database:
+```
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=nama_database
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+## 5. Generate Key Aplikasi
+```sh
+php artisan key:generate
+```
+
+## 6. Migrate dan Seed Database
+```sh
+php artisan migrate --seed
+```
+
+## 7. Jalankan Server Backend
+```sh
+php artisan serve
+```
+
+## 8. Jalankan Server Frontend
+```sh
+npm run dev
+```
+
+Setelah semua langkah selesai, buka browser dan akses aplikasi di:  
+http://127.0.0.1:8000`
+
 ## Stack Teknologi
 - **Laravel** - Backend framework untuk mengelola data dan logic bisnis.
 - **Inertia.js** - Middleware yang menghubungkan Laravel dengan React tanpa perlu API tambahan.
