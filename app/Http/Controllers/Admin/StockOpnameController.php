@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\StockOpnamesExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StockOpnameRequest;
 use App\Models\StockOpname;
 use App\Models\Product;
 use App\Models\StockTotal;
 use Carbon\Carbon;
-
+use Maatwebsite\Excel\Facades\Excel;
 
 class StockOpnameController extends Controller
 {
@@ -165,6 +166,19 @@ class StockOpnameController extends Controller
         return inertia('Admin/StockOpnames/Show', [
             'stockOpname' => $stockOpname,
         ]);
+    }
+
+    // Method untuk mengekspor data Stock Opname ke Excel
+    public function export($id)
+    {
+        // Mengambil data StockOpname bersama dengan detail produk dan jumlah stok
+        $stockOpname = StockOpname::with(['details.product', 'details.stockTotal'])->findOrFail($id);
+
+        // Membungkus StockOpname ke dalam array jika diperlukan oleh eksport
+        $export = new StockOpnamesExport([$stockOpname]);
+
+        // Menggunakan Excel facade untuk men-download file Excel
+        return Excel::download($export, 'stock_opname_' . $id . '.xlsx');
     }
 
 }
